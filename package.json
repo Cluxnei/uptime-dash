@@ -1,0 +1,17 @@
+{
+  "name": "uptime-dash",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:Cluxnei/uptime-dash.git",
+  "author": "Cluxnei <cluxnei31@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "compile": "browserify src/index.js -o dist/uptime-dash.js"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "browserify": "^17.0.0",
+    "sqlite3": "^5.0.2"
+  }
+}
