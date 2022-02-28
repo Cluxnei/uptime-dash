@@ -103,18 +103,21 @@ const populateDatabase = async () => {
     ];
 
     const connection = await getConnection();
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
         connection.serialize(() => {
             connection.run('BEGIN');
-            sqls.forEach((sql) => {
+            const promises = sqls.map(sql => new Promise((res, rej) => {
                 connection.run(sql, (err) => {
                     if (err) {
-                        return reject(err);
-                    }
+                        return rej(err);
+                    };
+                    res();
                 });
-            });
-            connection.run('COMMIT');
-            resolve();
+            }));
+            Promise.all(promises).then(() => {
+                connection.run('COMMIT');
+                resolve();
+            }).catch(reject);
         });
     });
 };

@@ -6,7 +6,7 @@
   "author": "Cluxnei <cluxnei31@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "node src/index.js",
     "compile": "browserify src/index.js -o dist/uptime-dash.js"
   },
   "dependencies": {
