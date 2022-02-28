@@ -7,8 +7,10 @@ const start = async () => {
     try {
         console.log('Populating database...');
         await populateDatabase();
+
         console.log('Getting monitors...');
         const monitors = await getMonitors();
+
         console.log('Running monitors...');
         monitorsIds = await runMonitors(monitors, (monitor) => {
             console.log(`Monitor ${monitor.name} runned successfully`);
@@ -18,6 +20,7 @@ const start = async () => {
             console.error(error);
             renderMonitor(monitor);
         });
+
         console.log('Rendering monitors...');
         monitors.forEach((monitor) => {
             renderMonitor(monitor);
@@ -26,14 +29,17 @@ const start = async () => {
     } catch (error) {
         console.log('Stopping monitors...');
         stopMonitors(monitorsIds);
+
         console.error(error);     
         process.exit(1);
     }
 
     process.on('SIGINT', () => {
         console.log('Gracefully shutting down from SIGINT (Ctrl-C)');
+        
         console.log('Stopping monitors...');
         stopMonitors(monitorsIds);
+        
         console.log('Closing database connection...');
         closeConnection().then(() => {
             console.log('Database closed...');

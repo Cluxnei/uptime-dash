@@ -64,6 +64,23 @@ const insert = async (table, object) => {
     });
 };
 
+const _delete = async (table, ids) => {
+    const connection = await getConnection();
+    return new Promise((resolve, reject) => {
+        const sql = `
+            DELETE FROM ${table}
+            WHERE id IN (${ids.map(() => '?').join(', ')})
+        `;
+        const params = [...ids];
+        connection.run(sql, params, (err) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve();
+        });
+    });
+};
+
 const populateDatabase = async () => {
     const sqls = [`
         CREATE TABLE IF NOT EXISTS monitors (
@@ -79,6 +96,7 @@ const populateDatabase = async () => {
             method TEXT,
             headers TEXT,
             body TEXT,
+            keep_data_for_days INTEGER,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         `,
@@ -127,5 +145,6 @@ module.exports = {
     closeConnection,
     select,
     insert,
+    _delete,
     populateDatabase,
 };
